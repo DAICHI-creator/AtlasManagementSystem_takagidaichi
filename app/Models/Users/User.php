@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use App\Models\Users\Subject;
 use App\Models\Posts\Like;
 use Auth;
 
@@ -67,7 +67,7 @@ class User extends Authenticatable
     }
 
     public function subjects(){
-        return ;// リレーションの定義
+        return $this->belongsToMany(Subject::class, 'subject_users', 'user_id', 'subject_id')->withTimestamps();// リレーションの定義
     }
 
     // いいねしているかどうか

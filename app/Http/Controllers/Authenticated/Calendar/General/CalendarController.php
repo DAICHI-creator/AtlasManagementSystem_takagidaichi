@@ -13,9 +13,10 @@ use DB;
 
 class CalendarController extends Controller
 {
-    public function show(){
+    public function show($user_id){
+        $user = User::with(['reserveSettings'])->findOrFail($user_id);
         $calendar = new CalendarView(time());
-        return view('authenticated.calendar.general.calendar', compact('calendar'));
+        return view('authenticated.calendar.general.calendar', compact('calendar', 'user'));
     }
 
     public function reserve(Request $request){

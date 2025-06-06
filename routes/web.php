@@ -8,7 +8,6 @@ use App\Http\Controllers\Authenticated\Calendar\General\CalendarController;
 use App\Http\Controllers\Authenticated\Top\TopsController;
 use App\Http\Controllers\Authenticated\Users\UsersController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +21,19 @@ use App\Http\Controllers\Authenticated\Users\UsersController;
 
 require __DIR__.'/auth.php';
 
+// ここから編集部分
+use App\Http\Controllers\Auth\RegisteredUserController;
+
+Route::get('/register', [RegisteredUserController::class, 'create'])
+    ->middleware('guest')
+    ->name('registerView');
+
+Route::post('/register', [RegisteredUserController::class, 'store'])
+    ->middleware('guest')
+    ->name('registerPost');
+// ここまで編集部分
+
+
 Route::group(['middleware' => 'auth'], function(){
     Route::namespace('Authenticated')->group(function(){
         Route::namespace('Top')->group(function(){
@@ -34,12 +46,18 @@ Route::group(['middleware' => 'auth'], function(){
                 Route::get('calendar/{user_id}', [CalendarController::class, 'show'])->name('calendar.general.show');
                 Route::post('reserve/calendar', [CalendarController::class, 'reserve'])->name('reserveParts');
                 Route::post('delete/calendar', [CalendarController::class, 'delete'])->name('deleteParts');
+
+                Route::post('cancel/reserve', [CalendarController::class, 'cancelReserve'])->name('cancelReserve');
             });
+
             Route::namespace('Admin')->group(function(){
                 Route::get('calendar/{user_id}/admin', [CalendarsController::class, 'show'])->name('calendar.admin.show');
                 Route::get('calendar/{date}/{part}', [CalendarsController::class, 'reserveDetail'])->name('calendar.admin.detail');
                 Route::get('setting/{user_id}/admin', [CalendarsController::class, 'reserveSettings'])->name('calendar.admin.setting');
                 Route::post('setting/update/admin', [CalendarsController::class, 'updateSettings'])->name('calendar.admin.update');
+
+                Route::get('calendar/{date}/{part}/detail', [CalendarsController::class, 'reservePartDetail'])->name('calendar.part.detail');
+
             });
         });
         Route::namespace('BulletinBoard')->group(function(){

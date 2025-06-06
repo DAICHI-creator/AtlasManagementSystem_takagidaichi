@@ -21,7 +21,7 @@ class PostComment extends Model
         return $this->belongsTo('App\Models\Posts\Post');
     }
 
-    public function commentUser($user_id){
-        return User::where('id', $user_id)->first();
+    public function commentUser(){
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

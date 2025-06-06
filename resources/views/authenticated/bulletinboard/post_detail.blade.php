@@ -7,8 +7,10 @@
           <div>
           </div>
           <div>
+          @if(Auth::check() && Auth::id() == $post->user_id)
             <span class="edit-modal-open" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
             <a href="{{ route('post.delete', ['id' => $post->id]) }}">削除</a>
+          @endif
           </div>
         </div>
 
@@ -22,6 +24,10 @@
         </div>
         <div class="detsail_post_title">{{ $post->post_title }}</div>
         <div class="mt-3 detsail_post">{{ $post->post }}</div>
+        <div class="mt-3">
+          <span>👍 いいね数: {{ $post->likes->count() }}</span>
+          <span class="ml-3">💬 コメント数: {{ $post->postComments->count() }}</span>
+        </div>
       </div>
       <div class="p-3">
         <div class="comment_container">
@@ -29,8 +35,8 @@
           @foreach($post->postComments as $comment)
           <div class="comment_area border-top">
             <p>
-              <span>{{ $comment->commentUser($comment->user_id)->over_name }}</span>
-              <span>{{ $comment->commentUser($comment->user_id)->under_name }}</span>さん
+              <span>{{ $comment->user->over_name }}</span>
+              <span>{{ $comment->user->under_name }}</span>さん
             </p>
             <p>{{ $comment->comment }}</p>
           </div>
@@ -51,6 +57,7 @@
     </div>
   </div>
 </div>
+@if(Auth::check() && Auth::id() == $post->user_id)
 <div class="modal js-modal">
   <div class="modal__bg js-modal-close"></div>
   <div class="modal__content">
@@ -72,4 +79,5 @@
     </form>
   </div>
 </div>
+@endif
 </x-sidebar>

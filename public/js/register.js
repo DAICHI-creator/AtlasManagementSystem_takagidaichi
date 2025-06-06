@@ -56,6 +56,15 @@ $(function () {
       $('.password_confirmation').removeClass('success_password_confirm');
     }
 
+    var password_val = $('.password').val();
+    var password_confirm_val = $('.password_confirmation').val();
+    var password_match = password_val === password_confirm_val && password_val.length > 0;
+
+    var subject_selected = true;
+    if ($('input:radio[name="role"]:checked').val() == 4) { // 生徒が選択されたとき
+      subject_selected = $('input[name="subject[]"]:checked').length > 0;
+    }
+
     var sex = $('input:radio[name="sex"]:checked').val();
     if (sex > 0) {
       $('.sex').addClass('success_sex');
@@ -91,7 +100,7 @@ $(function () {
       $('.role').removeClass('success_role');
     }
 
-    if ($('.over_name').hasClass('success_name') && $('.over_name_kana').hasClass('success_name_kana') && $('.under_name').hasClass('success_under_name') && $('.under_name_kana').hasClass('success_under_name_kana') && $('.mail_address').hasClass('success_mail_address') && $('.password').hasClass('success_password') && $('.password_confirmation').hasClass('success_password_confirm') && $('.sex').hasClass('success_sex') && $('.old_year').hasClass('success_year') && $('.old_month').hasClass('success_month') && $('.old_day').hasClass('success_day') && $('.role').hasClass('success_role')) {
+    if ($('.over_name').hasClass('success_name') && $('.over_name_kana').hasClass('success_name_kana') && $('.under_name').hasClass('success_under_name') && $('.under_name_kana').hasClass('success_under_name_kana') && $('.mail_address').hasClass('success_mail_address') && $('.password').hasClass('success_password') && $('.password_confirmation').hasClass('success_password_confirm') && $('.sex').hasClass('success_sex') && $('.old_year').hasClass('success_year') && $('.old_month').hasClass('success_month') && $('.old_day').hasClass('success_day') && $('.role').hasClass('success_role') && subject_selected && password_match) {
       $('.register_btn').prop('disabled', false);
     } else {
       $('.register_btn').prop('disabled', true);

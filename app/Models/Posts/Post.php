@@ -19,16 +19,22 @@ class Post extends Model
         return $this->belongsTo('App\Models\Users\User');
     }
 
+    public function likes(){
+        return $this->hasMany(Like::class, 'like_post_id');
+    }
+
+
     public function postComments(){
-        return $this->hasMany('App\Models\Posts\PostComment');
+        return $this->hasMany(PostComment::class, 'post_id');
     }
 
     public function subCategories(){
-        // リレーションの定義
+        return $this->belongsToMany(
+            \App\Models\Posts\SubCategory::class,
+            'post_sub_categories',
+            'post_id',
+            'sub_category_id'
+        );
     }
 
-    // コメント数
-    public function commentCounts($post_id){
-        return Post::with('postComments')->find($post_id)->postComments();
-    }
 }
